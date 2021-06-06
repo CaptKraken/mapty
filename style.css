@@ -29,7 +29,7 @@ body {
   overscroll-behavior-y: none;
 
   background-color: #fff;
-  padding: 2.5rem;
+  /* padding: 2.5rem; */
 
   display: flex;
 }
@@ -217,4 +217,44 @@ a:visited {
 }
 .cycling-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--1);
+}
+
+.msg-overlay {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.msg-container {
+  background: white;
+  color: black;
+  padding: 2.5rem;
+  position: relative;
+  border-radius: 2.5px;
+}
+.msg-btnClose {
+  background: #000;
+  color: #ececec;
+  padding: 0.75rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 2.5px;
+}
+.msg-btnClose:hover,
+.msg-btnClose:focus {
+  background: rgb(92, 91, 91);
+}
+
+.msg-heading {
+  font-size: 2.5rem;
+}
+.msg-text {
+  font-size: 1.5rem;
 }
