@@ -35,6 +35,7 @@ navigator.geolocation.getCurrentPosition(
             className: 'running-popup',
           })
         )
+        .setPopupContent(`bruh.<br> ${latlng} <br>Easily customizable.`)
         .openPopup();
     });
   },
