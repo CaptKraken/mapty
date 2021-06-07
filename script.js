@@ -11,38 +11,74 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-navigator.geolocation.getCurrentPosition(
-  position => {
+let map, mapEvent;
+
+class App {
+  constructor() {}
+  _getPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap(),
+        popupMessage('couldnt get your position')
+      );
+    }
+  }
+  _loadMap(position) {
     const { longitude, latitude } = position.coords;
     const latLong = [latitude, longitude];
-    const map = L.map('map').setView(latLong, 16);
+    map = L.map('map').setView(latLong, 16);
 
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
-    map.on('click', mapEvent => {
-      const { latlng } = mapEvent;
-      console.log(mapEvent);
-      L.marker(latlng)
-        .addTo(map)
-        .bindPopup(
-          L.popup({
-            maxWidth: 250,
-            minWidth: 100,
-            autoClose: false,
-            closeOnClick: false,
-            className: 'running-popup',
-          })
-        )
-        .setPopupContent(`bruh.<br> ${latlng} <br>Easily customizable.`)
-        .openPopup();
+
+    map.on('click', mapE => {
+      mapEvent = mapE;
+      form.classList.remove('hidden');
+      inputDistance.focus();
     });
-  },
-  () => {
-    popupMessage('couldnt get your position');
   }
-);
+  _showForm() {}
+  _toggleElevationField() {}
+  _newWorkout() {}
+}
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  //clearing input fields
+  inputDistance.value =
+    inputCadence.value =
+    inputDuration.value =
+    inputElevation.value =
+      '';
+
+  //putting pins on map
+  const { latlng } = mapEvent;
+  console.log(mapEvent);
+  L.marker(latlng)
+    .addTo(map)
+    .bindPopup(
+      L.popup({
+        maxWidth: 250,
+        minWidth: 100,
+        autoClose: false,
+        closeOnClick: false,
+        className:
+          inputType.textContent === 'Running'
+            ? 'running-popup'
+            : 'cycling-popup',
+      })
+    )
+    .setPopupContent(`bruh.<br> ${latlng} <br>Easily customizable.`)
+    .openPopup();
+});
+
+inputType.addEventListener('change', () => {
+  inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+  inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+});
 
 function popupMessage(msg) {
   const msgOverlay = document.createElement('div');
