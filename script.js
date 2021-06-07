@@ -58,7 +58,7 @@ class App {
   _getPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), () => {
-        popupMessage('couldnt get your position');
+        errorMessage('couldnt get your position');
       });
     }
   }
@@ -116,7 +116,7 @@ class App {
 
 const app = new App();
 
-function popupMessage(msg) {
+function errorMessage(msg) {
   const msgOverlay = document.createElement('div');
   msgOverlay.classList.add('msg-overlay');
   const msgContainer = document.createElement('div');
