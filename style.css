@@ -262,3 +262,17 @@ a:visited {
   font-size: 1.5rem;
   user-select: none;
 }
+
+.toast-container {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  padding: 0.5rem 2rem;
+  z-index: 99;
+  background: var(--color-brand--2);
+  border-radius: 5px;
+}
+.toast-text {
+  /* font-weight: 700; */
+  font-size: 2em;
+}
