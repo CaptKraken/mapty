@@ -10,12 +10,13 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+let messageShown = false;
 class Workout {
   date = new Date();
   id = Date.now().toString();
 
-  constructor(coords, distance, duration) {
-    this.coords = coords; // [lat, lng]
+  constructor(latLng, distance, duration) {
+    this.latLng = latLng; // [lat, lng]
     this.distance = distance;
     this.duration = duration;
   }
@@ -28,8 +29,9 @@ class Workout {
 }
 
 class Running extends Workout {
-  constructor(coords, distance, duration, cadance) {
-    super(coords, distance, duration);
+  type = 'running';
+  constructor(latLng, distance, duration, cadance) {
+    super(latLng, distance, duration);
     this.cadance = cadance;
     this.calcSpeed();
   }
@@ -41,8 +43,9 @@ class Running extends Workout {
 }
 
 class Cycling extends Workout {
-  constructor(coords, distance, duration, elevationGain) {
-    super(coords, distance, duration);
+  type = 'cycling';
+  constructor(latLng, distance, duration, elevationGain) {
+    super(latLng, distance, duration);
     this.elevationGain = elevationGain;
   }
 }
@@ -50,6 +53,7 @@ class Cycling extends Workout {
 class App {
   #map;
   #mapEvent;
+  #workouts = [];
   constructor() {
     this._getPosition();
     form.addEventListener('submit', this._newWorkout.bind(this));
@@ -61,6 +65,10 @@ class App {
         errorMessage('couldnt get your position');
       });
     }
+  }
+
+  showWorkout() {
+    return this.#workouts;
   }
   _loadMap(position) {
     const { longitude, latitude } = position.coords;
@@ -84,7 +92,53 @@ class App {
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
   }
   _newWorkout(e) {
+    //helper functions
+    const validInput = (...inputs) => inputs.every(inp => Number.isFinite(inp));
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+
     e.preventDefault();
+
+    // get data from form
+    const type = inputType.value;
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    const { latlng } = this.#mapEvent;
+    let workout;
+    //check if data is valid
+
+    // if running, create running object
+    if (type === 'running') {
+      const cadance = +inputCadence.value;
+      if (
+        !validInput(distance, duration, cadance) ||
+        !allPositive(distance, duration, cadance)
+      )
+        return errorMessage('input have to be postive number');
+
+      workout = new Running(latlng, distance, duration, cadance);
+    }
+
+    // if cycling, create cycling object
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+      if (
+        !validInput(distance, duration, elevation) |
+        !allPositive(distance, duration)
+      )
+        return errorMessage('input have to be postive number');
+
+      workout = new Cycling(latlng, distance, duration, elevation);
+    }
+
+    // add new object to workout array
+    this.#workouts.push(workout);
+
+    // render workout on map as marker
+    this.renderWorkoutMarker(workout);
+
+    // render workout on list
+
+    // hide the form && clear input fields
 
     //clearing input fields
     inputDistance.value =
@@ -92,10 +146,10 @@ class App {
       inputDuration.value =
       inputElevation.value =
         '';
+  }
 
-    //putting pins on map
-    const { latlng } = this.#mapEvent;
-    L.marker(latlng)
+  renderWorkoutMarker(workout) {
+    L.marker(workout.latLng)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -103,13 +157,10 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className:
-            inputType.textContent === 'Running'
-              ? 'running-popup'
-              : 'cycling-popup',
+          className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent(`bruh.<br> ${latlng} <br>Easily customizable.`)
+      .setPopupContent(`bruh.<br> ${workout.latLng} <br>Easily customizable.`)
       .openPopup();
   }
 }
@@ -134,10 +185,20 @@ function errorMessage(msg) {
 
   msgContainer.append(msgBtnClose, msgHeading, msgText);
   msgOverlay.append(msgContainer);
-  document.querySelector('body').append(msgOverlay);
 
-  const btnClose = document.querySelector('.msg-btnClose');
-  btnClose.addEventListener('click', () => {
+  //prevent multiple messges
+  if (messageShown === true) {
     msgOverlay.remove();
+  } else {
+    messageShown = true;
+    document.querySelector('body').append(msgOverlay);
+  }
+
+  const btnClose = document.querySelectorAll('.msg-btnClose');
+  btnClose.forEach(btnCls => {
+    btnCls.addEventListener('click', () => {
+      msgOverlay.remove();
+      messageShown = false;
+    });
   });
 }
