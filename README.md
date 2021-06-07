@@ -2,7 +2,8 @@
 
 this is a practice project from [Jonas Schmedtmann](https://www.udemy.com/user/jonasschmedtmann/)'s [JavaScript course](https://www.udemy.com/course/the-complete-javascript-course/)
 
-#Screenshot
+# Screenshot
+
 ![Screenshot](./Screenshot.jpg)
 
 # what i did
