@@ -8,3 +8,5 @@ added a error message popup ( errorMessage() ) & a toast notification thingy ( t
 
 i converted the localstorage data to objects again. go check _getLocalStorage() & _newWorkout() they still have their data intact. (i spent like half an hour wondering why the data has the same id lol)
 not sure if what i came up with an efficient way of doing it, but im gonna to sleep now.
+
+# [live demo](https://captkraken.github.io/mapty/)
