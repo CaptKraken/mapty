@@ -121,6 +121,7 @@ class App {
     this.#mapEvent = mapE;
     form.classList.remove("hidden");
     inputDistance.focus();
+    this.#mapZoomLevel = this.#map.getZoom();
   }
 
   _hideForm() {
