@@ -349,7 +349,7 @@ function toastMessage(msg) {
   toastContainer.classList.add("toast-container");
   const toastText = document.createElement("p");
   toastText.classList.add("toast-text");
-  toastText.innerHTML = `ℹ️ ${msg}`;
+  toastText.innerHTML = `${msg}`;
   toastContainer.append(toastText);
   document.querySelector("body").append(toastContainer);
   setTimeout(() => {

@@ -272,6 +272,22 @@ a:visited {
   z-index: 99;
   background: var(--color-brand--2);
   border-radius: 5px;
+  animation: dropdown 0.5s linear;
+}
+
+@keyframes dropdown {
+  0% {
+    transform: translateX(100%);
+    opacity: 0.1;
+  }
+  75% {
+    transform: translateX(-25%);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 .toast-text {
   /* font-weight: 700; */
