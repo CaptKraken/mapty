@@ -97,7 +97,6 @@ class App {
     return this.#workouts;
   }
   _loadMap(position) {
-    console.log(position);
     const { longitude, latitude } = position.coords;
     const latLong = [latitude, longitude];
     this.#map = L.map("map").setView(latLong, this.#mapZoomLevel);
