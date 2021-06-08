@@ -79,7 +79,16 @@ class App {
   _getPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), () => {
-        errorMessage("couldnt get your position");
+        errorMessage(
+          "I could'nt get your current location.\r\nDefault location: Phnom Penh, Cambodia."
+        );
+        const phnomPenh = {
+          coords: {
+            latitude: 11.55,
+            longitude: 104.91667,
+          },
+        };
+        this._loadMap(phnomPenh);
       });
     }
   }
@@ -88,6 +97,7 @@ class App {
     return this.#workouts;
   }
   _loadMap(position) {
+    console.log(position);
     const { longitude, latitude } = position.coords;
     const latLong = [latitude, longitude];
     this.#map = L.map("map").setView(latLong, this.#mapZoomLevel);
