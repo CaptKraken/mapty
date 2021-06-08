@@ -62,7 +62,7 @@ class Cycling extends Workout {
 class App {
   #map;
   #mapEvent;
-  #mapZoomLevel = 13;
+  #mapZoomLevel = 16;
   #workouts = [];
   constructor() {
     // get user's position
