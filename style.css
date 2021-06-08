@@ -272,20 +272,16 @@ a:visited {
   z-index: 99;
   background: var(--color-brand--2);
   border-radius: 5px;
-  animation: toastIn 0.5s linear;
+  animation: toastUp 0.5s linear;
 }
 
-@keyframes toastIn {
+@keyframes toastUp {
   0% {
-    transform: translateX(100%);
+    transform: translateY(35%);
     opacity: 0.1;
   }
-  75% {
-    transform: translateX(-25%);
-    opacity: 0.7;
-  }
   100% {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
