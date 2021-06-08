@@ -7,6 +7,8 @@ const inputDistance = document.querySelector(".form__input--distance");
 const inputDuration = document.querySelector(".form__input--duration");
 const inputCadence = document.querySelector(".form__input--cadence");
 const inputElevation = document.querySelector(".form__input--elevation");
+const btnReset = document.querySelector(".btn--clear-all");
+
 let messageShown = false;
 class Workout {
   constructor(latLng, distance, duration, date, id) {
@@ -303,6 +305,9 @@ class App {
 
 const app = new App();
 
+btnReset.addEventListener("click", app.reset);
+
+// some msg things
 function errorMessage(msg) {
   const msgOverlay = document.createElement("div");
   msgOverlay.classList.add("msg-overlay");

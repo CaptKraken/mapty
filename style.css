@@ -1,6 +1,7 @@
 :root {
   --color-brand--1: #ffb545;
   --color-brand--2: #00c46a;
+  --color-brand--3: #c70501;
 
   --color-dark--1: #2d3439;
   --color-dark--2: #42484d;
@@ -21,7 +22,7 @@ html {
 }
 
 body {
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   color: var(--color-light--2);
   font-weight: 400;
   line-height: 1.6;
@@ -275,4 +276,18 @@ a:visited {
 .toast-text {
   /* font-weight: 700; */
   font-size: 2em;
+}
+.btn--clear-all {
+  margin-top: 2rem;
+  cursor: pointer;
+  background: var(--color-brand--3);
+  padding: 1rem;
+  outline: none;
+  border: none;
+  color: white;
+}
+.btn--clear-all:hover,
+.btn--clear-all:active {
+  background: var(--color-brand--3);
+  filter: brightness(120%);
 }
