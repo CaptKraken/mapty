@@ -5,6 +5,8 @@ this is a practice project from [Jonas Schmedtmann](https://www.udemy.com/user/j
 # Screenshot || [Live Demo](https://captkraken.github.io/mapty/)
 ![Screenshot](./Screenshot.jpg)
 
+### *not mobile friendly
+
 # what i did
 
 added a error message popup ( errorMessage() ) & a toast notification thingy ( toastMessage() )
