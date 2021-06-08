@@ -80,7 +80,7 @@ class App {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), () => {
         errorMessage(
-          "I could'nt get your current location.\r\nDefault location: Phnom Penh, Cambodia."
+          "I couldn't get your current location.\r\nDefault location: Phnom Penh, Cambodia."
         );
         const phnomPenh = {
           coords: {
