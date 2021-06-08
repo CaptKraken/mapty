@@ -354,5 +354,5 @@ function toastMessage(msg) {
   document.querySelector("body").append(toastContainer);
   setTimeout(() => {
     toastContainer.remove();
-  }, 2000);
+  }, 1500);
 }

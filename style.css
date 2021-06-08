@@ -272,10 +272,10 @@ a:visited {
   z-index: 99;
   background: var(--color-brand--2);
   border-radius: 5px;
-  animation: dropdown 0.5s linear;
+  animation: toastIn 0.5s linear;
 }
 
-@keyframes dropdown {
+@keyframes toastIn {
   0% {
     transform: translateX(100%);
     opacity: 0.1;
@@ -301,9 +301,13 @@ a:visited {
   outline: none;
   border: none;
   color: white;
+  transition: all 0.25s;
 }
 .btn--clear-all:hover,
 .btn--clear-all:active {
   background: var(--color-brand--3);
   filter: brightness(120%);
+}
+.btn--clear-all:active {
+  filter: brightness(100%);
 }
