@@ -97,6 +97,10 @@ class App {
   showWorkout() {
     return this.#workouts;
   }
+
+  _getZoom() {
+    this.#mapZoomLevel = this.#map.getZoom();
+  }
   _loadMap(position) {
     this.curLoc = position;
 
@@ -110,6 +114,7 @@ class App {
     }).addTo(this.#map);
 
     this.#map.on("click", this._showForm.bind(this));
+    this.#map.on("zoomend", this._getZoom.bind(this));
     this.#workouts.forEach((wOut) => {
       this._renderWorkout(wOut);
       this._renderWorkoutMarker(wOut);
@@ -121,7 +126,6 @@ class App {
     this.#mapEvent = mapE;
     form.classList.remove("hidden");
     inputDistance.focus();
-    this.#mapZoomLevel = this.#map.getZoom();
   }
 
   _hideForm() {
