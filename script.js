@@ -64,6 +64,7 @@ class App {
   #mapEvent;
   #mapZoomLevel = 16;
   #workouts = [];
+  curLoc;
   constructor() {
     // get user's position
     this._getPosition();
@@ -97,6 +98,8 @@ class App {
     return this.#workouts;
   }
   _loadMap(position) {
+    this.curLoc = position;
+
     const { longitude, latitude } = position.coords;
     const latLong = [latitude, longitude];
     this.#map = L.map("map").setView(latLong, this.#mapZoomLevel);
@@ -112,6 +115,7 @@ class App {
       this._renderWorkoutMarker(wOut);
     });
     toastMessage("app loaded");
+    this._renderCurrentLocationMarker(this.curLoc);
   }
   _showForm(mapE) {
     this.#mapEvent = mapE;
@@ -191,6 +195,22 @@ class App {
     // set workout to localstorage
     this._setLocalStorage();
     toastMessage("record added");
+  }
+
+  _renderCurrentLocationMarker(position) {
+    const latLng = [position.coords.latitude, position.coords.longitude];
+    L.marker(latLng)
+      .addTo(this.#map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 250,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+        })
+      )
+      .setPopupContent(`📍 Current Location`)
+      .openPopup();
   }
 
   _renderWorkoutMarker(workout) {
