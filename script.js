@@ -161,7 +161,7 @@ class App {
     const distance = +inputDistance.value;
     const duration = +inputDuration.value;
     const { latlng } = this.#mapEvent;
-    let workout, date, id;
+    let workout;
 
     //check if data is valid
 
@@ -173,7 +173,14 @@ class App {
         !allPositive(distance, duration, cadance)
       )
         return errorMessage("input have to be postive number");
-      workout = new Running(latlng, distance, duration, date, id, cadance);
+      workout = new Running(
+        latlng,
+        distance,
+        duration,
+        undefined,
+        undefined,
+        cadance
+      );
     }
 
     // if cycling, create cycling object
@@ -184,7 +191,14 @@ class App {
         !allPositive(distance, duration)
       )
         return errorMessage("input have to be postive number");
-      workout = new Cycling(latlng, distance, duration, date, id, elevation);
+      workout = new Cycling(
+        latlng,
+        distance,
+        duration,
+        undefined,
+        undefined,
+        elevation
+      );
     }
     // add new object to workout array
     this.#workouts.push(workout);
@@ -383,7 +397,7 @@ function toastMessage(msg) {
   toastContainer.classList.add("toast-container");
   const toastText = document.createElement("p");
   toastText.classList.add("toast-text");
-  toastText.innerHTML = `${msg}`;
+  toastText.textContent = `${msg}`;
   toastContainer.append(toastText);
   document.querySelector("body").append(toastContainer);
   setTimeout(() => {
