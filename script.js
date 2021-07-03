@@ -64,6 +64,7 @@ class App {
   #mapEvent;
   #mapZoomLevel = 16;
   #workouts = [];
+  #markers = [];
   curLoc;
   constructor() {
     // get user's position
@@ -75,7 +76,15 @@ class App {
     // Attach event handlers
     form.addEventListener("submit", this._newWorkout.bind(this));
     inputType.addEventListener("change", this._toggleElevationField);
-    containerWorkouts.addEventListener("click", this._moveToPopup.bind(this));
+    containerWorkouts.addEventListener("click", (e) => {
+      const trashBin = e.target.closest(".workout__delete");
+      if (!trashBin) this._moveToPopup(e);
+      else {
+        const workoutEl = e.target.closest(".workout");
+        if (!workoutEl) return;
+        this.deleteWorkout(workoutEl.dataset.id);
+      }
+    });
   }
   _getPosition() {
     if (navigator.geolocation) {
@@ -233,7 +242,10 @@ class App {
   }
 
   _renderWorkoutMarker(workout) {
-    L.marker(workout.latLng)
+    const marker = L.marker(workout.latLng);
+    this.#markers.push(marker);
+    console.log(this.#markers);
+    marker
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -252,7 +264,11 @@ class App {
   _renderWorkout(workout) {
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
-      <h2 class="workout__title">${workout.description}</h2>
+    
+        <h2 class="workout__title">
+          <span>${workout.description}</span>
+          <span class="workout__delete">🗑</span>
+        </h2>
       <div class="workout__details">
         <span class="workout__icon">${
           workout.type === "running" ? "🏃‍♂️" : "🚴‍♀️"
@@ -291,12 +307,13 @@ class App {
         <span class="workout__value">${workout.elevationGain}</span>
         <span class="workout__unit">m</span>
       </div>
+      </li>
       `;
 
     form.insertAdjacentHTML("afterend", html);
   }
 
-  _moveToPopup(e) {
+  _moveToPopup = (e) => {
     const workoutEl = e.target.closest(".workout");
     if (!workoutEl) return;
     const workout = this.#workouts.find(
@@ -310,6 +327,20 @@ class App {
       },
     });
     this._setLocalStorage();
+  };
+
+  deleteWorkout(id) {
+    const domEL = document.querySelector(`[data-id="${id}"]`);
+    this.#workouts.forEach((wk, i) => {
+      if (wk.id === id) {
+        this.#workouts.splice(i, 1);
+
+        this.#markers[i].remove();
+        this.#markers.splice(i, 1);
+      }
+    });
+    this._setLocalStorage();
+    domEL.remove();
   }
 
   _setLocalStorage() {
@@ -319,6 +350,7 @@ class App {
   _getLocalStorage() {
     const data = localStorage.getItem("workouts");
     const workouts = JSON.parse(data);
+
     if (!workouts) return;
     workouts.forEach((wo) => {
       let workout = {};
@@ -354,7 +386,6 @@ class App {
 const app = new App();
 
 btnReset.addEventListener("click", app.reset);
-
 // some msg things
 function errorMessage(msg) {
   const msgOverlay = document.createElement("div");
